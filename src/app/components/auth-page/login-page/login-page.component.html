@@ -1,0 +1,122 @@
+<app-loader *ngIf="loader"></app-loader>
+
+
+<section>
+  <div class="middle-section">
+    <h1>Login Sign-up Form</h1>
+  </div>
+</section>
+
+<div class="row col-10 col-md-10 col-sm-10 col-xs-10 form-container" *ngIf="logIn">
+	<form class="row form" (ngSubmit)="f.form.valid && onSubmitForm()" #f="ngForm" novalidate>
+
+    <div class="col-12 form-group">
+      <input class="text form-control" type="text" name="Username" placeholder="Username" [(ngModel)]="model.username" #username="ngModel" [ngClass]="{ 'is-invalid': f.submitted && username.invalid }" required>
+      <div *ngIf="f.submitted && username.invalid" class="invalid-feedback">
+          <div *ngIf="username.errors.required">User Name is required</div>
+      </div>
+    </div>
+
+    <div class="col-12 form-group">
+      <input class="text form-control" type="email" name="email" placeholder="Email"  [(ngModel)]="model.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required email >
+      <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+          <div *ngIf="email.errors.required">Email is required</div>
+          <div *ngIf="email.errors.email">Email must be a valid email address</div>
+      </div>
+    </div>
+
+    <div class="col-12 form-group">
+      <input class="text form-control" type="password" name="password" placeholder="Password"  [(ngModel)]="model.password" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6">
+      <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+          <div *ngIf="password.errors.required">Password is required</div>
+          <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+      </div>
+    </div>
+
+    <div class="col-12 form-group">
+      <input class="text form-control" type="password" name="password" placeholder="Confirm Password" [(ngModel)]="model.repassword" #repassword="ngModel" [ngClass]="{ 'is-invalid': f.submitted && repassword.invalid }" required minlength="6">
+      <div *ngIf="f.submitted && repassword.invalid" class="invalid-feedback">
+          <!-- <small *ngIf="myForm.controls.cnfPwd.errors.mustMatch">Password & Confirm Password must match.</small> -->
+          <div *ngIf="repassword.errors.required">Password is required</div>
+          <div *ngIf="repassword.errors.minlength">Password must be at least 6 characters</div>
+      </div>
+    </div>
+
+    <div class="col-12 form-group">
+      <select class="dropdown form-control" name="country" [(ngModel)]="model.country" #country="ngModel" [ngClass]="{ 'is-invalid': f.submitted && country.invalid }" required (ngModelChange)="getState()">
+        <option value="">Select Country</option>
+        <option [value]="count.country" *ngFor="let count of countries">
+      		{{ count.country }}
+      	</option>
+      </select>
+      <div *ngIf="f.submitted && country.invalid" class="invalid-feedback">
+          <div *ngIf="country.errors.required">Country is required</div>
+      </div>
+    </div>
+
+    <div class="col-12 form-group">
+      <select class="dropdown form-control" name="state" [(ngModel)]="model.state" #state="ngModel" [ngClass]="{ 'is-invalid': f.submitted && state.invalid }" required>
+        <option value="">Select State</option>
+        <option [value]="statee" *ngFor="let statee of states">{{ statee }}</option>
+      </select>
+      <div *ngIf="f.submitted && state.invalid" class="invalid-feedback">
+          <div *ngIf="state.errors.required">State is required</div>
+      </div>
+    </div>
+
+    <div class="col-12 form-group">
+      <div class="radio-container">
+        <input class=" form-control"  type="radio" name="inlineRadioOptions" id="male" value="male" checked [(ngModel)]="model.gender" #gender="ngModel">
+        <label class="form-check-label" for="male">Male</label>
+        <input class=" form-control" type="radio" name="inlineRadioOptions" id="female" value="female" [(ngModel)]="model.gender" #gender="ngModel">
+        <label class="form-check-label" for="female">Female</label>
+      </div>
+    </div>
+
+		<div class="wthree-text form-group">
+			<label class="anim">
+				<input type="checkbox" name="terms" class="checkbox form-control" [(ngModel)]="model.terms" #terms="ngModel" [ngClass]="{ 'is-invalid': f.submitted && terms.invalid }" required >
+				<span>I Agree To The Terms & Conditions</span>
+			</label>
+      <div *ngIf="f.submitted && terms.invalid" class="invalid-feedback">
+          <div *ngIf="terms.errors.required">Agree the terms & conditions</div>
+      </div>
+			<div class="clear"> </div>
+		</div>
+
+    <div class="col-12 form-group">
+        <button class="submit-btn">Register</button>
+    </div>
+    <div class="log">
+      <p>Already have an Account? <span (click)="toggleLogin()"> Login Now!</span></p>
+    </div>
+	</form>
+
+</div>
+
+
+<div class="row col-10 col-md-10 col-sm-10 col-xs-10 form-container" *ngIf='!logIn'>
+	<form class="row form" name="form" (ngSubmit)="f.form.valid && onLogIN()" #f="ngForm" novalidate>
+    <div class="col-12 form-group">
+      <input class="text form-control" type="email" name="email" placeholder="Email" [(ngModel)]="logInModel.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required email>
+      <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+          <div *ngIf="email.errors.required">Email is required</div>
+          <div *ngIf="email.errors.email">Email must be a valid email address</div>
+      </div>
+    </div>
+    <div class="col-12 form-group">
+      <input class="text form-control" type="password" name="password" placeholder="Password" required [(ngModel)]="logInModel.password" #password="ngModel" [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6">
+      <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+          <div *ngIf="password.errors.required">Password is required</div>
+          <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+      </div>
+    </div>
+    <div class="col-12 form-group">
+        <button class="submit-btn">Log In</button>
+    </div>
+    <div class="log">
+      <p>Don't have an Account? <span (click)="toggleLogin()"> Register Now!</span></p>
+    </div>
+	</form>
+
+</div>
